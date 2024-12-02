@@ -25,12 +25,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
-            <groupId>kr.merutilm</groupId>
-            <artifactId>basestructures</artifactId>
-            <version>1.15</version>
-        </dependency>
+	        <groupId>com.github.Merutilm</groupId>
+	        <artifactId>Base-Structures</artifactId>
+	        <version>v1.0.01</version>
+	    </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
