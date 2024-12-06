@@ -17,6 +17,22 @@ public class CSFrame extends JFrame {
 
     private final List<CSDialog> subDialogs = new ArrayList<>();
 
+    
+    protected static final int X_CORRECTION_FRAME;
+    protected static final int Y_CORRECTION_FRAME;
+
+    static{
+        JFrame sample = new JFrame();
+        int w = 1000;
+        int h = 1000;
+        sample.setPreferredSize(new Dimension(w, h));
+        sample.setSize(w, h);
+        sample.pack();
+        Container c = sample.getContentPane();
+        X_CORRECTION_FRAME = sample.getWidth() - c.getWidth();
+        Y_CORRECTION_FRAME = sample.getHeight() - c.getHeight();
+    }
+
     public void addSubDialog(CSDialog component) {
         subDialogs.add(component);
     }
@@ -26,15 +42,16 @@ public class CSFrame extends JFrame {
             subDialog.dispose();
         }
     }
-    protected static final int X_CORRECTION_FRAME = -14;
-    protected static final int Y_CORRECTION_FRAME = -37;
     @Serial
     private static final long serialVersionUID = 1966675078653752384L;
 
+    public CSFrame(String title, @Nullable Image icon){
+        this(title, icon, 0, 0);
+    }
     public CSFrame(String title, @Nullable Image icon, int width, int height) {
         setTitle(title);
         setIconImage(icon);
-        setBounds(0, 0, width, height);
+        setStrictBounds(0, 0, width, height);
         getContentPane().setBackground(Color.WHITE);
         setFocusable(true);
         setLayout(null);
@@ -71,18 +88,19 @@ public class CSFrame extends JFrame {
 
     }
 
-    @Override
-    public void setBounds(int x, int y, int width, int height) {
-        super.setBounds(x, y, width, height);
-        setPreferredSize(new Dimension(width - X_CORRECTION_FRAME, height - Y_CORRECTION_FRAME));
+    /**
+     * Set Bounds of window, but it ignores title, and any insets size.
+     * @param x pos x
+     * @param y pos y
+     * @param width the width of window except insets
+     * @param height the height of window except insets
+     */
+    public void setStrictBounds(int x, int y, int width, int height){
+        setLocation(x, y);
+        setPreferredSize(new Dimension(width + X_CORRECTION_FRAME, height + Y_CORRECTION_FRAME));
+        pack(); //pack() uses the preferred size for the setBounds() parameters.
     }
 
-    @Override
-    public void pack() {
-        super.pack();
-        setVisible(true);
-        repaint();
-    }
 
     public boolean isControlPressed() {
         return controlPressed;
